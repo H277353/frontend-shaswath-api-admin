@@ -4,6 +4,19 @@ import { X } from 'lucide-react';
 const ProductForm = ({ isOpen, onClose, initialData = null, onSubmit }) => {
   const isEditMode = !!initialData;
 
+  const fields =[
+    { name: "clusterMode", label: "Cluster Mode" },
+    { name: "isShow", label: "Is Show" },
+    { name: "hasCharges", label: "Has Charges" },
+    { name: "isCommissions", label: "Is Commissions" },
+    { name: "isInventory", label: "Is Inventory" },
+    { name: "isSettlement", label: "Is Settlement" },
+    { name: "isVirtual", label: "Is Virtual" },
+    { name: "isVisible", label: "Is Visible" },
+    { name: "reverseTx", label: "Reverse Tx" },
+  ]
+
+
   const {
     register,
     handleSubmit,
@@ -46,8 +59,8 @@ const ProductForm = ({ isOpen, onClose, initialData = null, onSubmit }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+   <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
+      <div className="bg-gray-100 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-800">
@@ -65,7 +78,8 @@ const ProductForm = ({ isOpen, onClose, initialData = null, onSubmit }) => {
         {/* Form */}
         <form onSubmit={handleSubmit(handleFormSubmit)} className="overflow-y-auto max-h-[calc(90vh-140px)]">
           <div className="px-6 py-4 space-y-6">
-            {/* Name */}
+            <div className='grid grid-cols-2 gap-6'>
+                {/* Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Name <span className="text-red-500">*</span>
@@ -128,352 +142,40 @@ const ProductForm = ({ isOpen, onClose, initialData = null, onSubmit }) => {
                 <p className="mt-1 text-sm text-red-600">{errors.productGroup.message}</p>
               )}
             </div>
-
-            {/* Cluster Mode */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Cluster Mode <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                {...register('clusterMode', { required: 'Cluster Mode is required' })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter cluster mode"
-              />
-              {errors.clusterMode && (
-                <p className="mt-1 text-sm text-red-600">{errors.clusterMode.message}</p>
-              )}
             </div>
 
-            {/* Boolean Fields - 2 columns */}
+            
+
+            {/* Boolean Fields - 2 columns with Toggle Switches */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Is Show */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Is Show <span className="text-red-500">*</span>
-                </label>
-                <Controller
-                  name="isShow"
-                  control={control}
-                  rules={{ required: 'This field is required' }}
-                  render={({ field }) => (
-                    <div className="flex gap-4">
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="true"
-                          checked={field.value === true}
-                          onChange={() => field.onChange(true)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                {fields.map(({ name, label }) => (
+                    <div key={name}>
+                        <Controller
+                            name={name}
+                            control={control}
+                            render={({ field }) => (
+                            <div className="flex items-center justify-between">
+                                <label className="text-sm font-medium text-gray-700">
+                                {label} <span className="text-red-500">*</span>
+                                </label>
+                                <button
+                                    type="button"
+                                    onClick={() => field.onChange(!field.value)}
+                                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                                    field.value ? "bg-blue-600" : "bg-gray-200"
+                                    }`}
+                                >
+                                <span
+                                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                                    field.value ? "translate-x-6" : "translate-x-1"
+                                    }`}
+                                />
+                                </button>
+                            </div>
+                            )}
                         />
-                        <span className="ml-2 text-sm text-gray-700">Yes</span>
-                      </label>
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="false"
-                          checked={field.value === false}
-                          onChange={() => field.onChange(false)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">No</span>
-                      </label>
-                    </div>
-                  )}
-                />
-                {errors.isShow && (
-                  <p className="mt-1 text-sm text-red-600">{errors.isShow.message}</p>
-                )}
-              </div>
-
-              {/* Has Charges */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Has Charges <span className="text-red-500">*</span>
-                </label>
-                <Controller
-                  name="hasCharges"
-                  control={control}
-                  rules={{ required: 'This field is required' }}
-                  render={({ field }) => (
-                    <div className="flex gap-4">
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="true"
-                          checked={field.value === true}
-                          onChange={() => field.onChange(true)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">Yes</span>
-                      </label>
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="false"
-                          checked={field.value === false}
-                          onChange={() => field.onChange(false)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">No</span>
-                      </label>
-                    </div>
-                  )}
-                />
-                {errors.hasCharges && (
-                  <p className="mt-1 text-sm text-red-600">{errors.hasCharges.message}</p>
-                )}
-              </div>
-
-              {/* Is Commissions */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Is Commissions <span className="text-red-500">*</span>
-                </label>
-                <Controller
-                  name="isCommissions"
-                  control={control}
-                  rules={{ required: 'This field is required' }}
-                  render={({ field }) => (
-                    <div className="flex gap-4">
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="true"
-                          checked={field.value === true}
-                          onChange={() => field.onChange(true)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">Yes</span>
-                      </label>
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="false"
-                          checked={field.value === false}
-                          onChange={() => field.onChange(false)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">No</span>
-                      </label>
-                    </div>
-                  )}
-                />
-                {errors.isCommissions && (
-                  <p className="mt-1 text-sm text-red-600">{errors.isCommissions.message}</p>
-                )}
-              </div>
-
-              {/* Is Inventory */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Is Inventory <span className="text-red-500">*</span>
-                </label>
-                <Controller
-                  name="isInventory"
-                  control={control}
-                  rules={{ required: 'This field is required' }}
-                  render={({ field }) => (
-                    <div className="flex gap-4">
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="true"
-                          checked={field.value === true}
-                          onChange={() => field.onChange(true)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">Yes</span>
-                      </label>
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="false"
-                          checked={field.value === false}
-                          onChange={() => field.onChange(false)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">No</span>
-                      </label>
-                    </div>
-                  )}
-                />
-                {errors.isInventory && (
-                  <p className="mt-1 text-sm text-red-600">{errors.isInventory.message}</p>
-                )}
-              </div>
-
-              {/* Is Settlement */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Is Settlement <span className="text-red-500">*</span>
-                </label>
-                <Controller
-                  name="isSettlement"
-                  control={control}
-                  rules={{ required: 'This field is required' }}
-                  render={({ field }) => (
-                    <div className="flex gap-4">
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="true"
-                          checked={field.value === true}
-                          onChange={() => field.onChange(true)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">Yes</span>
-                      </label>
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="false"
-                          checked={field.value === false}
-                          onChange={() => field.onChange(false)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">No</span>
-                      </label>
-                    </div>
-                  )}
-                />
-                {errors.isSettlement && (
-                  <p className="mt-1 text-sm text-red-600">{errors.isSettlement.message}</p>
-                )}
-              </div>
-
-              {/* Is Virtual */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Is Virtual <span className="text-red-500">*</span>
-                </label>
-                <Controller
-                  name="isVirtual"
-                  control={control}
-                  rules={{ required: 'This field is required' }}
-                  render={({ field }) => (
-                    <div className="flex gap-4">
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="true"
-                          checked={field.value === true}
-                          onChange={() => field.onChange(true)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">Yes</span>
-                      </label>
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="false"
-                          checked={field.value === false}
-                          onChange={() => field.onChange(false)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">No</span>
-                      </label>
-                    </div>
-                  )}
-                />
-                {errors.isVirtual && (
-                  <p className="mt-1 text-sm text-red-600">{errors.isVirtual.message}</p>
-                )}
-              </div>
-
-              {/* Is Visible */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Is Visible <span className="text-red-500">*</span>
-                </label>
-                <Controller
-                  name="isVisible"
-                  control={control}
-                  rules={{ required: 'This field is required' }}
-                  render={({ field }) => (
-                    <div className="flex gap-4">
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="true"
-                          checked={field.value === true}
-                          onChange={() => field.onChange(true)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">Yes</span>
-                      </label>
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="false"
-                          checked={field.value === false}
-                          onChange={() => field.onChange(false)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">No</span>
-                      </label>
-                    </div>
-                  )}
-                />
-                {errors.isVisible && (
-                  <p className="mt-1 text-sm text-red-600">{errors.isVisible.message}</p>
-                )}
-              </div>
-
-              {/* Reverse Tx */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Reverse Tx <span className="text-red-500">*</span>
-                </label>
-                <Controller
-                  name="reverseTx"
-                  control={control}
-                  rules={{ required: 'This field is required' }}
-                  render={({ field }) => (
-                    <div className="flex gap-4">
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="true"
-                          checked={field.value === true}
-                          onChange={() => field.onChange(true)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">Yes</span>
-                      </label>
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          {...field}
-                          value="false"
-                          checked={field.value === false}
-                          onChange={() => field.onChange(false)}
-                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">No</span>
-                      </label>
-                    </div>
-                  )}
-                />
-                {errors.reverseTx && (
-                  <p className="mt-1 text-sm text-red-600">{errors.reverseTx.message}</p>
-                )}
-              </div>
+                   </div>
+                ))}
             </div>
           </div>
 
