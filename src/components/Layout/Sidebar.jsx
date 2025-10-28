@@ -133,7 +133,7 @@ const Sidebar = () => {
                 onMouseLeave={handleMouseLeave}
                 className={`${isOpen ? "w-64" : "w-16"} 
           bg-gray-200 border-r border-gray-300 shadow-lg 
-          flex flex-col transition-all duration-200 ease-in-out z-40`}
+          flex flex-col transition-all duration-500 ease-in-out z-40`}
                 style={{ overflow: isOpen ? "visible" : "hidden" }}
             >
                 {/* Header */}
