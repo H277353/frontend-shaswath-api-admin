@@ -62,7 +62,7 @@ export const menuItems = [
         name: "Masters",
         icon: FolderKanban,
         children: [
-            { name: "Product Master", path: "/master/product" },
+            { name: "Product Master", path: "/master/products" },
             { name: "Sub-Product Master", path: "/master/sub-product" },
             { name: "Operator Master", path: "/master/operator" },
             { name: "Sub-Operator Master", path: "/master/sub-operator" },
