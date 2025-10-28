@@ -1,22 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import ProductForm from './components/productForm'
-import SubProductForm from './components/SubProductForm'
-import OperatorForm from './components/OperatorForm'
-import SubOperatorForm from './components/SubOperatorForm'
 
+import Dashboard from './components/Dashboard'
+import { Route, Routes } from 'react-router'
+import Layout from './components/Layout/Layout'
 
 function App() {
   
 
   return (
-    <>
-     <SubOperatorForm
-      isOpen={true}
-     />
-    </>
+    <Routes>
+      {/* index route */}
+      <Route path="/" element={<Layout />} >
+        {/* The dashboard page will render in the <Outlet /> */}
+        <Route index element={<Dashboard />} />
+
+        {/* Example for future pages */}
+        {/* <Route path="products" element={<Products />} /> */}
+      
+      </Route>
+
+     
+    </Routes>
   )
 }
 
